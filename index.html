@@ -1,0 +1,667 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#0b0d12" />
+    <title>Personal Assitance — Prototype</title>
+
+    <link rel="manifest" href="manifest.json" />
+    <link rel="icon" href="icon-192.png" />
+    <link rel="stylesheet" href="styles.css" />
+
+    <!-- Optional: modern font without external dependency (system stack in CSS) -->
+  </head>
+  <body>
+    <div class="app" id="app">
+      <!-- Top Bar -->
+      <header class="topbar">
+        <div class="brand">
+          <div class="brandMark" aria-hidden="true"></div>
+          <div class="brandText">
+            <div class="brandName">Personal Assitance</div>
+            <div class="brandTag">Sample Prototype only :D • Offline</div>
+          </div>
+        </div>
+
+        <div class="topActions">
+          <button
+            class="btn ghost"
+            id="btnInstall"
+            title="Install App"
+            type="button"
+          >
+            Install
+          </button>
+          <button
+            class="btn ghost"
+            id="btnTheme"
+            title="Toggle Theme"
+            type="button"
+          >
+            Theme
+          </button>
+          <button
+            class="btn"
+            id="btnQuickGen"
+            title="Generate a plan"
+            type="button"
+          >
+            Generate
+          </button>
+        </div>
+      </header>
+
+      <!-- Layout -->
+      <div class="layout">
+        <!-- Sidebar (collapses on mobile) -->
+        <aside class="sidebar" id="sidebar">
+          <div class="sideSection">
+            <div class="sideTitle">Navigation</div>
+            <nav class="nav">
+              <button
+                class="navItem active"
+                data-view="dashboard"
+                type="button"
+              >
+                <span class="navDot"></span> Dashboard
+              </button>
+              <button class="navItem" data-view="generator" type="button">
+                <span class="navDot"></span> Program Maker
+              </button>
+              <button class="navItem" data-view="today" type="button">
+                <span class="navDot"></span> Today’s Workout
+              </button>
+              <button class="navItem" data-view="history" type="button">
+                <span class="navDot"></span> History
+              </button>
+              <button class="navItem" data-view="library" type="button">
+                <span class="navDot"></span> Exercise Library
+              </button>
+              <button class="navItem" data-view="settings" type="button">
+                <span class="navDot"></span> Settings
+              </button>
+            </nav>
+          </div>
+
+          <div class="sideSection">
+            <div class="sideTitle">Status</div>
+            <div class="miniCard">
+              <div class="miniRow">
+                <div class="miniLabel">Mode</div>
+                <div class="miniValue" id="miniMode">—</div>
+              </div>
+              <div class="miniRow">
+                <div class="miniLabel">Goal</div>
+                <div class="miniValue" id="miniGoal">—</div>
+              </div>
+              <div class="miniRow">
+                <div class="miniLabel">Split</div>
+                <div class="miniValue" id="miniSplit">—</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="sideSection">
+            <div class="sideTitle">Quick Tools</div>
+            <div class="sideGrid">
+              <button class="btn soft" id="btnStartWorkout" type="button">
+                Start Workout
+              </button>
+              <button class="btn soft" id="btnLogQuick" type="button">
+                Quick Log
+              </button>
+              <button class="btn soft" id="btnReset" type="button">
+                Reset
+              </button>
+            </div>
+          </div>
+
+          <div class="sideFooter">
+            <div class="pill" id="pillOffline">Offline Ready</div>
+            <div class="pill ghost" id="pillSaved">Saved</div>
+          </div>
+        </aside>
+
+        <!-- Main -->
+        <main class="main">
+          <!-- DASHBOARD -->
+          <section class="view active" id="view-dashboard">
+            <div class="grid2">
+              <div class="card hero">
+                <div class="heroTop">
+                  <div>
+                    <h1 class="h1">Gym Assist (Domain).</h1>
+                    <p class="muted">P.B.- Eosef DelaTorre</p>
+                  </div>
+                  <div class="heroBadge">
+                    <div class="badgeTitle">Adaptive Score</div>
+                    <div class="badgeValue" id="badgeScore">—</div>
+                    <div class="badgeSub" id="badgeSub">
+                      Make a plan to start
+                    </div>
+                  </div>
+                </div>
+
+                <div class="kpiRow">
+                  <div class="kpi">
+                    <div class="kpiLabel">Streak</div>
+                    <div class="kpiValue" id="kpiStreak">0</div>
+                    <div class="kpiSub">days</div>
+                  </div>
+                  <div class="kpi">
+                    <div class="kpiLabel">Workouts</div>
+                    <div class="kpiValue" id="kpiWorkouts">0</div>
+                    <div class="kpiSub">logged</div>
+                  </div>
+                  <div class="kpi">
+                    <div class="kpiLabel">This Week</div>
+                    <div class="kpiValue" id="kpiWeek">0</div>
+                    <div class="kpiSub">sessions</div>
+                  </div>
+                  <div class="kpi">
+                    <div class="kpiLabel">Focus</div>
+                    <div class="kpiValue" id="kpiFocus">—</div>
+                    <div class="kpiSub">today</div>
+                  </div>
+                </div>
+
+                <div class="heroActions">
+                  <button class="btn" data-nav="generator" type="button">
+                    Make / Update Program
+                  </button>
+                  <button class="btn ghost" data-nav="today" type="button">
+                    Open Today
+                  </button>
+                  <button class="btn ghost" id="btnDeload" type="button">
+                    Suggest Deload
+                  </button>
+                </div>
+              </div>
+
+              <div class="card">
+                <div class="cardHead">
+                  <div>
+                    <div class="cardTitle">Readiness & Progression</div>
+                    <div class="muted small">
+                      Smart scoring (fatigue, recovery, performance) adjusts
+                      next workouts.
+                    </div>
+                  </div>
+                  <button class="btn ghost" id="btnExplainScore" type="button">
+                    Explain
+                  </button>
+                </div>
+
+                <div class="scoreGrid">
+                  <div class="scoreBox">
+                    <div class="scoreLabel">Fatigue</div>
+                    <div class="scoreValue" id="scoreFatigue">—</div>
+                    <div class="scoreBar">
+                      <div class="scoreFill" id="barFatigue"></div>
+                    </div>
+                  </div>
+                  <div class="scoreBox">
+                    <div class="scoreLabel">Recovery</div>
+                    <div class="scoreValue" id="scoreRecovery">—</div>
+                    <div class="scoreBar">
+                      <div class="scoreFill" id="barRecovery"></div>
+                    </div>
+                  </div>
+                  <div class="scoreBox">
+                    <div class="scoreLabel">Performance</div>
+                    <div class="scoreValue" id="scorePerformance">—</div>
+                    <div class="scoreBar">
+                      <div class="scoreFill" id="barPerformance"></div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="callout" id="calloutAdvice">
+                  <div class="calloutTitle">Advice</div>
+                  <div class="calloutText" id="adviceText">
+                    Create a plan to get adaptive recommendations.
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="grid2">
+              <div class="card">
+                <div class="cardHead">
+                  <div>
+                    <div class="cardTitle">Next Session Preview</div>
+                    <div class="muted small">
+                      Based on your split + readiness.
+                    </div>
+                  </div>
+                  <button class="btn ghost" id="btnRebuildToday" type="button">
+                    Rebuild
+                  </button>
+                </div>
+
+                <div class="preview" id="nextPreview">
+                  <div class="empty">
+                    <div class="emptyTitle">No plan yet</div>
+                    <div class="emptyText">
+                      Go to Program Maker and generate your first plan.
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="card">
+                <div class="cardHead">
+                  <div>
+                    <div class="cardTitle">Weekly Balance</div>
+                    <div class="muted small">
+                      Push vs Pull vs Legs vs Core distribution.
+                    </div>
+                  </div>
+                  <button class="btn ghost" id="btnRecalcBalance" type="button">
+                    Recalc
+                  </button>
+                </div>
+
+                <div class="balance" id="balanceBars">
+                  <div class="balanceRow">
+                    <div class="balanceLabel">Push</div>
+                    <div class="balanceTrack">
+                      <div class="balanceFill" id="balPush"></div>
+                    </div>
+                    <div class="balanceVal" id="balPushVal">0</div>
+                  </div>
+                  <div class="balanceRow">
+                    <div class="balanceLabel">Pull</div>
+                    <div class="balanceTrack">
+                      <div class="balanceFill" id="balPull"></div>
+                    </div>
+                    <div class="balanceVal" id="balPullVal">0</div>
+                  </div>
+                  <div class="balanceRow">
+                    <div class="balanceLabel">Legs</div>
+                    <div class="balanceTrack">
+                      <div class="balanceFill" id="balLegs"></div>
+                    </div>
+                    <div class="balanceVal" id="balLegsVal">0</div>
+                  </div>
+                  <div class="balanceRow">
+                    <div class="balanceLabel">Core</div>
+                    <div class="balanceTrack">
+                      <div class="balanceFill" id="balCore"></div>
+                    </div>
+                    <div class="balanceVal" id="balCoreVal">0</div>
+                  </div>
+                </div>
+
+                <div class="muted small" style="margin-top: 10px">
+                  Tip: If one category is too low, the generator automatically
+                  corrects it next week.
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- GENERATOR -->
+          <section class="view" id="view-generator">
+            <div class="card">
+              <div class="cardHead">
+                <div>
+                  <div class="cardTitle">Program Maker</div>
+                  <div class="muted small">
+                    Option 1 (rule-based) builds your plan. Option 2 (smart
+                    scoring) adapts volume & intensity automatically.
+                  </div>
+                </div>
+                <div class="row">
+                  <button class="btn ghost" id="btnLoadDemo" type="button">
+                    Demo Profile
+                  </button>
+                  <button class="btn" id="btnGenerate" type="button">
+                    Generate Program
+                  </button>
+                </div>
+              </div>
+
+              <div class="formGrid">
+                <div class="field">
+                  <label for="mode">Training Mode</label>
+                  <select id="mode">
+                    <option value="gym">Gym (machines + free weights)</option>
+                    <option value="home">
+                      Home (bodyweight / dumbbells / bands)
+                    </option>
+                  </select>
+                </div>
+
+                <div class="field">
+                  <label for="goal">Goal</label>
+                  <select id="goal">
+                    <option value="hypertrophy">Muscle (Hypertrophy)</option>
+                    <option value="fatloss">Fat Loss</option>
+                    <option value="strength">Strength</option>
+                    <option value="recomp">Recomp</option>
+                  </select>
+                </div>
+
+                <div class="field">
+                  <label for="level">Experience</label>
+                  <select id="level">
+                    <option value="beginner">Beginner</option>
+                    <option value="intermediate">Intermediate</option>
+                    <option value="advanced">Advanced</option>
+                  </select>
+                </div>
+
+                <div class="field">
+                  <label for="days">Days / Week</label>
+                  <select id="days">
+                    <option value="3">3 days</option>
+                    <option value="4">4 days</option>
+                    <option value="5">5 days</option>
+                    <option value="6">6 days</option>
+                  </select>
+                </div>
+
+                <div class="field">
+                  <label for="minutes">Minutes / Session</label>
+                  <select id="minutes">
+                    <option value="20">20 min</option>
+                    <option value="30">30 min</option>
+                    <option value="45">45 min</option>
+                    <option value="60" selected>60 min</option>
+                  </select>
+                </div>
+
+                <div class="field">
+                  <label for="equip">Equipment (Home)</label>
+                  <select id="equip">
+                    <option value="bodyweight">Bodyweight only</option>
+                    <option value="db">Dumbbells</option>
+                    <option value="bands">Resistance bands</option>
+                    <option value="db_bands">Dumbbells + bands</option>
+                  </select>
+                  <div class="help">Only used if Training Mode = Home.</div>
+                </div>
+
+                <div class="field span2">
+                  <label for="limits">Injuries / Limits (optional)</label>
+                  <input
+                    id="limits"
+                    type="text"
+                    placeholder="e.g. knee pain, lower back sensitive, no overhead press"
+                  />
+                  <div class="help">
+                    The generator avoids risky movements when possible and
+                    offers substitutions.
+                  </div>
+                </div>
+
+                <div class="field">
+                  <label for="prefSplit">Split Preference</label>
+                  <select id="prefSplit">
+                    <option value="auto" selected>Auto (recommended)</option>
+                    <option value="fullbody">Full Body</option>
+                    <option value="upperlower">Upper / Lower</option>
+                    <option value="ppl">Push Pull Legs</option>
+                    <option value="bro">Bro Split</option>
+                  </select>
+                  <div class="help">Auto chooses based on days & time.</div>
+                </div>
+
+                <div class="field">
+                  <label for="tone">Program Style</label>
+                  <select id="tone">
+                    <option value="balanced" selected>Balanced</option>
+                    <option value="minimal">Minimal (fast sessions)</option>
+                    <option value="highvolume">High Volume</option>
+                    <option value="athletic">Athletic (conditioning)</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="divider"></div>
+
+              <div class="rowWrap">
+                <div class="toggle">
+                  <input type="checkbox" id="toggleAutoProg" checked />
+                  <label for="toggleAutoProg"
+                    >Auto progression (add weight/reps based on
+                    performance)</label
+                  >
+                </div>
+                <div class="toggle">
+                  <input type="checkbox" id="toggleSmartAdapt" checked />
+                  <label for="toggleSmartAdapt"
+                    >Smart adaptation (fatigue/recovery/performance
+                    scoring)</label
+                  >
+                </div>
+                <div class="toggle">
+                  <input type="checkbox" id="toggleDeload" checked />
+                  <label for="toggleDeload"
+                    >Auto deload suggestion (every ~4–6 weeks)</label
+                  >
+                </div>
+              </div>
+            </div>
+
+            <div class="card">
+              <div class="cardHead">
+                <div>
+                  <div class="cardTitle">Generated Program</div>
+                  <div class="muted small">
+                    Saved offline. You can edit, swap exercises, and log
+                    workouts.
+                  </div>
+                </div>
+                <div class="row">
+                  <button class="btn ghost" id="btnExport" type="button">
+                    Export JSON
+                  </button>
+                  <button class="btn ghost" id="btnCopyText" type="button">
+                    Copy Text
+                  </button>
+                </div>
+              </div>
+
+              <div id="programOutput" class="programOutput">
+                <div class="empty">
+                  <div class="emptyTitle">Nothing generated yet</div>
+                  <div class="emptyText">
+                    Fill the form above and hit “Generate Program”.
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- TODAY -->
+          <section class="view" id="view-today">
+            <div class="card">
+              <div class="cardHead">
+                <div>
+                  <div class="cardTitle">Today’s Workout</div>
+                  <div class="muted small">
+                    Start, track sets, use rest timer, and log session.
+                  </div>
+                </div>
+                <div class="row">
+                  <button class="btn ghost" id="btnPrevDay" type="button">
+                    Prev
+                  </button>
+                  <button class="btn ghost" id="btnNextDay" type="button">
+                    Next
+                  </button>
+                  <button class="btn" id="btnFinishWorkout" type="button">
+                    Finish & Log
+                  </button>
+                </div>
+              </div>
+
+              <div class="todayHeader">
+                <div>
+                  <div class="todayTitle" id="todayTitle">—</div>
+                  <div class="muted small" id="todayMeta">—</div>
+                </div>
+
+                <div class="timerCard">
+                  <div class="timerLabel">Rest Timer</div>
+                  <div class="timerTime" id="timerTime">00:00</div>
+                  <div class="timerBtns">
+                    <button class="btn soft" id="btnTimerStart" type="button">
+                      Start
+                    </button>
+                    <button class="btn ghost" id="btnTimerStop" type="button">
+                      Stop
+                    </button>
+                    <button class="btn ghost" id="btnTimerReset" type="button">
+                      Reset
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <div id="todayList" class="workoutList"></div>
+            </div>
+          </section>
+
+          <!-- HISTORY -->
+          <section class="view" id="view-history">
+            <div class="card">
+              <div class="cardHead">
+                <div>
+                  <div class="cardTitle">History</div>
+                  <div class="muted small">
+                    Your logged workouts and performance notes (offline saved).
+                  </div>
+                </div>
+                <div class="row">
+                  <button class="btn ghost" id="btnClearHistory" type="button">
+                    Clear History
+                  </button>
+                </div>
+              </div>
+              <div id="historyList" class="historyList"></div>
+            </div>
+          </section>
+
+          <!-- LIBRARY -->
+          <section class="view" id="view-library">
+            <div class="card">
+              <div class="cardHead">
+                <div>
+                  <div class="cardTitle">Exercise Library</div>
+                  <div class="muted small">
+                    Tap an exercise to view alternatives & notes.
+                  </div>
+                </div>
+                <div class="row">
+                  <input
+                    class="search"
+                    id="libSearch"
+                    type="text"
+                    placeholder="Search exercises…"
+                  />
+                  <button class="btn ghost" id="btnLibReset" type="button">
+                    Reset
+                  </button>
+                </div>
+              </div>
+              <div id="libraryGrid" class="libraryGrid"></div>
+            </div>
+          </section>
+
+          <!-- SETTINGS -->
+          <section class="view" id="view-settings">
+            <div class="card">
+              <div class="cardHead">
+                <div>
+                  <div class="cardTitle">Settings</div>
+                  <div class="muted small">
+                    Everything saves locally on this device.
+                  </div>
+                </div>
+              </div>
+
+              <div class="settingsGrid">
+                <div class="settingsCard">
+                  <div class="settingsTitle">Preferences</div>
+                  <div class="field">
+                    <label for="units">Units</label>
+                    <select id="units">
+                      <option value="kg" selected>kg</option>
+                      <option value="lb">lb</option>
+                    </select>
+                  </div>
+                  <div class="field">
+                    <label for="startWeek">Week starts on</label>
+                    <select id="startWeek">
+                      <option value="mon" selected>Monday</option>
+                      <option value="sun">Sunday</option>
+                    </select>
+                  </div>
+                  <div class="muted small">
+                    Tip: Install as an app for smoother offline use.
+                  </div>
+                </div>
+
+                <div class="settingsCard">
+                  <div class="settingsTitle">Data</div>
+                  <button class="btn soft" id="btnBackup" type="button">
+                    Backup (download JSON)
+                  </button>
+                  <button class="btn ghost" id="btnRestore" type="button">
+                    Restore (paste JSON)
+                  </button>
+                  <button class="btn danger" id="btnWipeAll" type="button">
+                    Wipe All Data
+                  </button>
+                  <div class="help">
+                    Backup lets you move data to another device.
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+        </main>
+      </div>
+
+      <!-- Mobile bottom nav -->
+      <nav class="bottomNav" id="bottomNav">
+        <button class="bNav active" data-view="dashboard" type="button">
+          Home
+        </button>
+        <button class="bNav" data-view="generator" type="button">Maker</button>
+        <button class="bNav" data-view="today" type="button">Today</button>
+        <button class="bNav" data-view="history" type="button">Logs</button>
+        <button class="bNav" data-view="settings" type="button">
+          Settings
+        </button>
+      </nav>
+
+      <!-- Modal -->
+      <div class="modalWrap hidden" id="modalWrap" aria-hidden="true">
+        <div class="modal" role="dialog" aria-modal="true">
+          <div class="modalHead">
+            <div class="modalTitle" id="modalTitle">Modal</div>
+            <button class="btn ghost" id="modalClose" type="button">
+              Close
+            </button>
+          </div>
+          <div class="modalBody" id="modalBody"></div>
+          <div class="modalFoot" id="modalFoot"></div>
+        </div>
+      </div>
+
+      <div
+        class="toastWrap"
+        id="toastWrap"
+        aria-live="polite"
+        aria-atomic="true"
+      ></div>
+    </div>
+
+    <script src="app.js"></script>
+  </body>
+</html>
